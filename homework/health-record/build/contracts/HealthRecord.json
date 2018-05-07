@@ -1,0 +1,104 @@
+{
+  "contractName": "HealthRecord",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603580601d6000396000f3006080604052600080fd00a165627a7a723058206846fa359d109f25ad7425fcc99ec368dec8168f47372dc95a62b0efd6db9fd70029",
+  "deployedBytecode": "0x6080604052600080fd00a165627a7a723058206846fa359d109f25ad7425fcc99ec368dec8168f47372dc95a62b0efd6db9fd70029",
+  "sourceMap": "26:26:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:26:0;;;;;;;",
+  "deployedSourceMap": "26:26:0:-;;;;;",
+  "source": "pragma solidity ^0.4.18;\n\ncontract HealthRecord {\n\n}",
+  "sourcePath": "/Users/fjalcaraz/Desktop/SBC/sbc-notes/homework/health-record/contracts/HealthRecord.sol",
+  "ast": {
+    "absolutePath": "/Users/fjalcaraz/Desktop/SBC/sbc-notes/homework/health-record/contracts/HealthRecord.sol",
+    "exportedSymbols": {
+      "HealthRecord": [
+        2
+      ]
+    },
+    "id": 3,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".18"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:0"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 2,
+        "linearizedBaseContracts": [
+          2
+        ],
+        "name": "HealthRecord",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 3,
+        "src": "26:26:0"
+      }
+    ],
+    "src": "0:52:0"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/fjalcaraz/Desktop/SBC/sbc-notes/homework/health-record/contracts/HealthRecord.sol",
+    "exportedSymbols": {
+      "HealthRecord": [
+        2
+      ]
+    },
+    "id": 3,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".18"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:0"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 2,
+        "linearizedBaseContracts": [
+          2
+        ],
+        "name": "HealthRecord",
+        "nodeType": "ContractDefinition",
+        "nodes": [],
+        "scope": 3,
+        "src": "26:26:0"
+      }
+    ],
+    "src": "0:52:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.23+commit.124ca40d.Emscripten.clang"
+  },
+  "networks": {
+    "1525722019212": {
+      "events": {},
+      "links": {},
+      "address": "0x113c7030f7bcd96117789815d0c4b7b2658d6724",
+      "transactionHash": "0xea84180e4fd1e6ff0dfffe9d7e222c2c6a042c14490de4bf86fbbab81ecab8c7"
+    }
+  },
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-05-07T20:03:36.936Z"
+}

@@ -27,15 +27,24 @@ Once completed, you'll now have a project structure with the following items:
 
 # Compile 
 
+Compile will compile solidity smart-contract
+
 ```truffle compile```
 
 # Migrate 
+
+## Command 
+Migrate will deploy the solidity smart contract.
 
 ```truffle migrate --reset```
 
 or to migrate to a specific network define in `truffle.js`
 
 ```truffle migrate --network dev```
+
+## Files
+### Naming
+The numbered prefix is required in order to record whether the migration ran successfully. The suffix is purely for human readability and comprehension.
 
 # Network - Ethereum Client
 
@@ -73,6 +82,14 @@ Really similar to ganache but you can't configure that much. Runs on `http://127
 It open a console and you can type directly the action without `truffle` prefix.
 For example, instead of typing `truffle compile`, you need to only type `compile`.
 
+## Live 
+??
+
+### Geth
+
+## Private
+
+??
 
 
 
