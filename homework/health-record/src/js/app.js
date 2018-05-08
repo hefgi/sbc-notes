@@ -21,13 +21,13 @@ App = {
   },
 
   initContract: function() {
-    $.getJSON('TutorialToken.json', function(data) {
+    $.getJSON('HealthRecord.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract.
-      var TutorialTokenArtifact = data;
-      App.contracts.TutorialToken = TruffleContract(TutorialTokenArtifact);
+      var HealthRecordArtifact = data;
+      App.contracts.HealthRecord = TruffleContract(HealthRecordArtifact);
 
       // Set the provider for our contract.
-      App.contracts.TutorialToken.setProvider(App.web3Provider);
+      App.contracts.HealthRecord.setProvider(App.web3Provider);
 
       // Use our contract to retieve and mark the adopted pets.
       return App.getBalances();
@@ -40,7 +40,7 @@ App = {
     $(document).on('click', '#transferButton', App.handleTransfer);
   },
 
-  handleTransfer: function(event) {
+  createRecord: function(event) {
     event.preventDefault();
 
     var amount = parseInt($('#TTTransferAmount').val());
@@ -70,7 +70,7 @@ App = {
     });
   },
 
-  getBalances: function() {
+  getRecord: function() {
     console.log('Getting balances...');
 
     var tutorialTokenInstance;
