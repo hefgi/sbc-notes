@@ -1,3 +1,74 @@
+var create_height = $('#HRCreateHeight');
+var create_weight = $('#HRCreateWeight');
+var create_problems = $('#HRCreateProblems');
+var create_medications = $('#HRCreateMedications');
+var create_allergies = $('#HRCreateAllergies');
+var create_button = $('#createButton');
+
+var search_address = $('#HRSearchAddress');
+var search_button = $('#searchButton');
+var search_result = $('#result-search');
+
+var update_height = $('#HRUpdateHeight');
+var update_weight = $('#HRUpdateWeight');
+var update_problems = $('#HRUpdateProblems');
+var update_medications = $('#HRUpdateMedications');
+var update_allergies = $('#HRUpdateAllergies');
+var update_button = $('#updateButton');
+
+class HealthRecord {
+  constructor(result) {
+    this.height_cm = result[0];
+    this.weight_kg = result[1];
+    this.problems = result[2];
+    this.medications = result[3];
+    this.allergies = result[4];
+  }
+
+  addHealthRecordToDOM(transactionsDiv){
+    //start a virtual form
+    var form = $('<form>');
+
+    var div = $('<div>').addClass('form-group')
+    var label = $('<label>').html('Height (cm)').addClass('control-label').attr('for', 'HRUpdateHeight')
+    div.append(label)
+    var input = $('<input>').html(this.height_cm).addClass('form-control').attr({'type': 'text', 'id': 'HRUpdateHeight'})
+    div.append(input)
+    form.append(div)
+
+    var div = $('<div>').addClass('form-group')
+    var label = $('<label>').html('Weight (kg)').addClass('control-label').attr('for', 'HRUpdateWeight')
+    div.append(label)
+    var input = $('<input>').html(this.weight_kg).addClass('form-control').attr({'type': 'text', 'id': 'HRUpdateWeight'})
+    div.append(input)
+    form.append(div)
+
+    var div = $('<div>').addClass('form-group')
+    var label = $('<label>').html('Problems').addClass('control-label').attr('for', 'HRUpdateProblems')
+    div.append(label)
+    var textarea = $('<textarea>').html(this.problems).addClass('form-control').attr({'row': '3', 'id': 'HRUpdateProblems'})
+    div.append(textarea)
+    form.append(div)
+
+    var div = $('<div>').addClass('form-group')
+    var label = $('<label>').html('Medications').addClass('control-label').attr('for', 'HRCreateMedications')
+    div.append(label)
+    var textarea = $('<textarea>').html(this.medications).addClass('form-control').attr({'row': '3', 'id': 'HRCreateMedications'})
+    div.append(textarea)
+    form.append(div)
+
+    var div = $('<div>').addClass('form-group')
+    var label = $('<label>').html('Allergies').addClass('control-label').attr('for', 'HRCreateAllergies')
+    div.append(label)
+    var textarea = $('<textarea>').html(this.allergies).addClass('form-control').attr({'row': '3', 'id': 'HRCreateAllergies'})
+    div.append(textarea)
+    form.append(div)
+
+    //we add the form onto the html
+    transactionsDiv.append(form);
+  }
+}
+
 App = {
   web3Provider: null,
   contracts: {},
@@ -29,26 +100,59 @@ App = {
       // Set the provider for our contract.
       App.contracts.HealthRecord.setProvider(App.web3Provider);
 
-      // Use our contract to retieve and mark the adopted pets.
-      return App.getBalances();
+      //By default we set account in the search
+      web3.eth.getAccounts(function(error, accounts) {
+        if (error) {
+          console.log(error);
+        }
+        search_address.val() = accounts[0];
+      });
+
+      // Use our contract to retieve the record.
+      return App.getRecord();
     });
 
     return App.bindEvents();
   },
 
   bindEvents: function() {
-    $(document).on('click', '#transferButton', App.handleTransfer);
+    $(document).on('click', '#createButton', App.createRecord);
+    $(document).on('click', '#searchButton', App.getRecord);
+    $(document).on('click', '#updateButton', App.updateRecord);
+
+  },
+
+  getRecord: function() {
+    event.preventDefault();
+
+    var healthRecordInstance;
+
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+
+      var account = accounts[0];
+
+      App.contracts.HealthRecord.deployed().then(function(instance) {
+        healthRecordInstance = instance;
+
+        return tutorialTokenInstance.getRecord(account);
+      }).then(function(result) {
+        let record = new HealthRecord(result)
+
+        search_result.html("");
+        record.addHealthRecordToDOM(search_result);
+      }).catch(function(err) {
+        console.log(err.message);
+      });
+    });
   },
 
   createRecord: function(event) {
     event.preventDefault();
 
-    var amount = parseInt($('#TTTransferAmount').val());
-    var toAddress = $('#TTTransferAddress').val();
-
-    console.log('Transfer ' + amount + ' TT to ' + toAddress);
-
-    var tutorialTokenInstance;
+    var healthRecordInstance;
 
     web3.eth.getAccounts(function(error, accounts) {
       if (error) {
@@ -57,23 +161,23 @@ App = {
 
       var account = accounts[0];
 
-      App.contracts.TutorialToken.deployed().then(function(instance) {
-        tutorialTokenInstance = instance;
+      App.contracts.HealthRecord.deployed().then(function(instance) {
+        healthRecordInstance = instance;
 
-        return tutorialTokenInstance.transfer(toAddress, amount, {from: account});
+        return healthRecordInstance.createRecord(problems.val(), medications.val(), allergies.val(), weight_kg.val(), height_cm.val());
       }).then(function(result) {
-        alert('Transfer Successful!');
-        return App.getBalances();
+        alert('Creation Successful!');
       }).catch(function(err) {
         console.log(err.message);
       });
     });
   },
 
-  getRecord: function() {
-    console.log('Getting balances...');
+//todo
+  updateRecord: function(event) {
+    event.preventDefault();
 
-    var tutorialTokenInstance;
+    var healthRecordInstance;
 
     web3.eth.getAccounts(function(error, accounts) {
       if (error) {
@@ -82,20 +186,19 @@ App = {
 
       var account = accounts[0];
 
-      App.contracts.TutorialToken.deployed().then(function(instance) {
-        tutorialTokenInstance = instance;
+      App.contracts.HealthRecord.deployed().then(function(instance) {
+        healthRecordInstance = instance;
 
-        return tutorialTokenInstance.balanceOf(account);
+        return healthRecordInstance.updateRecord(account, problems.val(), medications.val(), allergies.val(), weight_kg.val(), height_cm.val());
       }).then(function(result) {
-        balance = result.c[0];
-
-        $('#TTBalance').text(balance);
+        alert('Update Successful!');
+        return App.getRecord();
       }).catch(function(err) {
+        alert('Update failed. Not allowed to update record.');
         console.log(err.message);
       });
     });
   }
-
 };
 
 $(function() {
