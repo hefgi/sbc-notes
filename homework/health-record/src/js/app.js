@@ -7,7 +7,7 @@ var create_button = $('#createButton');
 
 var search_address = $('#HRSearchAddress');
 var search_button = $('#searchButton');
-var search_result = $('#result-search');
+var search_result = $('#search-result');
 
 var update_height = $('#HRUpdateHeight');
 var update_weight = $('#HRUpdateWeight');
@@ -18,51 +18,51 @@ var update_button = $('#updateButton');
 
 class HealthRecord {
   constructor(result) {
-    this.height_cm = result[0];
-    this.weight_kg = result[1];
-    this.problems = result[2];
-    this.medications = result[3];
-    this.allergies = result[4];
+    this.height_cm = result[3];
+    this.weight_kg = result[4];
+    this.problems = result[0];
+    this.medications = result[1];
+    this.allergies = result[2];
   }
 
   addHealthRecordToDOM(transactionsDiv){
     //start a virtual form
     var form = $('<form>');
 
-    var div = $('<div>').addClass('form-group')
-    var label = $('<label>').html('Height (cm)').addClass('control-label').attr('for', 'HRUpdateHeight')
-    div.append(label)
-    var input = $('<input>').html(this.height_cm).addClass('form-control').attr({'type': 'text', 'id': 'HRUpdateHeight'})
-    div.append(input)
-    form.append(div)
+    var div = $('<div>').addClass('form-group');
+    var label = $('<label>').html('Height (cm)').addClass('control-label').attr('for', 'HRUpdateHeight');
+    div.append(label);
+    var input = $('<input>').html(this.height_cm).addClass('form-control').attr({'type': 'number', 'id': 'HRUpdateHeight'});
+    div.append(input);
+    form.append(div);
 
-    var div = $('<div>').addClass('form-group')
-    var label = $('<label>').html('Weight (kg)').addClass('control-label').attr('for', 'HRUpdateWeight')
-    div.append(label)
-    var input = $('<input>').html(this.weight_kg).addClass('form-control').attr({'type': 'text', 'id': 'HRUpdateWeight'})
-    div.append(input)
-    form.append(div)
+    var div = $('<div>').addClass('form-group');
+    var label = $('<label>').html('Weight (kg)').addClass('control-label').attr('for', 'HRUpdateWeight');
+    div.append(label);
+    var input = $('<input>').html(this.weight_kg).addClass('form-control').attr({'type': 'number', 'id': 'HRUpdateWeight'});
+    div.append(input);
+    form.append(div);
 
-    var div = $('<div>').addClass('form-group')
-    var label = $('<label>').html('Problems').addClass('control-label').attr('for', 'HRUpdateProblems')
-    div.append(label)
-    var textarea = $('<textarea>').html(this.problems).addClass('form-control').attr({'row': '3', 'id': 'HRUpdateProblems'})
-    div.append(textarea)
-    form.append(div)
+    var div = $('<div>').addClass('form-group');
+    var label = $('<label>').html('Problems').addClass('control-label').attr('for', 'HRUpdateProblems');
+    div.append(label);
+    var textarea = $('<textarea>').html(this.problems).addClass('form-control').attr({'row': '3', 'id': 'HRUpdateProblems'});
+    div.append(textarea);
+    form.append(div);
 
-    var div = $('<div>').addClass('form-group')
-    var label = $('<label>').html('Medications').addClass('control-label').attr('for', 'HRCreateMedications')
-    div.append(label)
-    var textarea = $('<textarea>').html(this.medications).addClass('form-control').attr({'row': '3', 'id': 'HRCreateMedications'})
-    div.append(textarea)
-    form.append(div)
+    var div = $('<div>').addClass('form-group');
+    var label = $('<label>').html('Medications').addClass('control-label').attr('for', 'HRUpdateMedications');
+    div.append(label);
+    var textarea = $('<textarea>').html(this.medications).addClass('form-control').attr({'row': '3', 'id': 'HRUpdateMedications'});
+    div.append(textarea);
+    form.append(div);
 
-    var div = $('<div>').addClass('form-group')
-    var label = $('<label>').html('Allergies').addClass('control-label').attr('for', 'HRCreateAllergies')
-    div.append(label)
-    var textarea = $('<textarea>').html(this.allergies).addClass('form-control').attr({'row': '3', 'id': 'HRCreateAllergies'})
-    div.append(textarea)
-    form.append(div)
+    var div = $('<div>').addClass('form-group');
+    var label = $('<label>').html('Allergies').addClass('control-label').attr('for', 'HRUpdateAllergies');
+    div.append(label);
+    var textarea = $('<textarea>').html(this.allergies).addClass('form-control').attr({'row': '3', 'id': 'HRUpdateAllergies'});
+    div.append(textarea);
+    form.append(div);
 
     //we add the form onto the html
     transactionsDiv.append(form);
@@ -127,26 +127,29 @@ App = {
 
     var healthRecordInstance;
 
-    web3.eth.getAccounts(function(error, accounts) {
-      if (error) {
-        console.log(error);
-      }
+    // web3.eth.getAccounts(function(error, accounts) {
+    //   if (error) {
+    //     console.log(error);
+    //   }
 
-      var account = accounts[0];
+      var account = search_address.val();
 
       App.contracts.HealthRecord.deployed().then(function(instance) {
         healthRecordInstance = instance;
 
-        return tutorialTokenInstance.getRecord(account);
+        return healthRecordInstance.getRecord(account);
       }).then(function(result) {
-        let record = new HealthRecord(result)
+        debugger;
+        let record = new HealthRecord(result);
 
         search_result.html("");
         record.addHealthRecordToDOM(search_result);
       }).catch(function(err) {
+        debugger;
+
         console.log(err.message);
       });
-    });
+    //});
   },
 
   createRecord: function(event) {
@@ -154,26 +157,26 @@ App = {
 
     var healthRecordInstance;
 
-    web3.eth.getAccounts(function(error, accounts) {
-      if (error) {
-        console.log(error);
-      }
+    // web3.eth.getAccounts(function(error, accounts) {
+    //   if (error) {
+    //     console.log(error);
+    //   }
 
-      var account = accounts[0];
+    //   var account = accounts[0];
+      debugger;
 
       App.contracts.HealthRecord.deployed().then(function(instance) {
         healthRecordInstance = instance;
 
-        return healthRecordInstance.createRecord(problems.val(), medications.val(), allergies.val(), weight_kg.val(), height_cm.val());
+        return healthRecordInstance.createRecord(create_problems.val(), create_medications.val(), create_allergies.val(), create_weight.val(), create_height.val());
       }).then(function(result) {
         alert('Creation Successful!');
       }).catch(function(err) {
         console.log(err.message);
       });
-    });
+    //});
   },
 
-//todo
   updateRecord: function(event) {
     event.preventDefault();
 
@@ -202,7 +205,7 @@ App = {
 };
 
 $(function() {
-  $(window).load(function() {
+  $(window).on("load", function() {
     App.init();
   });
 });
