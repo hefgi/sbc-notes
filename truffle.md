@@ -64,6 +64,10 @@ Notes : `ethereum-testRPC` have been renamed `ganacche-cli`. It could be really 
 
 It will run on `http://127.0.0.1:7545`
 
+Even better to specify a mnemonic phrase, like that, there's no need c/c in metamask :
+
+```ganache-cli -p 7545 -m "enter snack service song clump clown chronic favorite dizzy robot exclude digital"```
+
 ### Truffle Develop
 
 Really similar to ganache but you can't configure that much. Runs on `http://127.0.0.1:9545`
