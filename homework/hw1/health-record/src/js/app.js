@@ -18,8 +18,8 @@ var update_button = $('#updateButton');
 
 class HealthRecord {
   constructor(result) {
-    this.height_cm = result[3].c[0];
-    this.weight_kg = result[4].c[0];
+    this.height_cm = result[4].c[0];
+    this.weight_kg = result[3].c[0];
     this.problems = result[0];
     this.medications = result[1];
     this.allergies = result[2];
@@ -117,11 +117,8 @@ App = {
       // Set the provider for our contract.
       App.contracts.HealthRecord.setProvider(App.web3Provider);
 
-      //By default we set account in the search
-      App.getAddress()
-
-      // Use our contract to retrieve the record.
-      return App.getRecord();
+      // By default we set account in the search & Use our contract to retrieve the record.
+      App.getAddress();
     });
 
     return App.bindEvents();
@@ -140,12 +137,13 @@ App = {
         console.log(error);
       }
       search_address.val(accounts[0]);
+
+      //then retrieve the record
+      App.getRecord();
     });
   },
 
   getRecord: function() {
-    event.preventDefault();
-
     var healthRecordInstance;
 
     var account = search_address.val();
