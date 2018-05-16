@@ -25,10 +25,27 @@ class HealthRecord {
     this.allergies = result[2];
   }
 
-  addHealthRecordToDOM(transactionsDiv){
+  isValid() {
+    if (this.problems.length <= 50 
+      && this.problems.length > 0
+      && this.medications.length <= 50 
+      && this.medications.length > 0
+      && this.allergies.length <= 50 
+      && this.allergies.length > 0
+      && this.weight_kg > 0 
+      && this.weight_kg <= 500 
+      && this.height_cm > 0 
+      && this.height_cm <= 300) {
+      return true
+    }
+    return false
+  }
+
+  addHealthRecordToDOM(transactionsDiv) {
     //start a virtual form
     var form = $('<form>');
 
+    //ugly code, could be way better but I don't have time to deal with jquery :x
     var div = $('<div>').addClass('form-group');
     var label = $('<label>').html('Height (cm)').addClass('control-label').attr('for', 'HRUpdateHeight');
     div.append(label);
@@ -101,14 +118,9 @@ App = {
       App.contracts.HealthRecord.setProvider(App.web3Provider);
 
       //By default we set account in the search
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
-        search_address.val() = accounts[0];
-      });
+      App.getAddress()
 
-      // Use our contract to retieve the record.
+      // Use our contract to retrieve the record.
       return App.getRecord();
     });
 
@@ -119,7 +131,16 @@ App = {
     $(document).on('click', '#createButton', App.createRecord);
     $(document).on('click', '#searchButton', App.getRecord);
     $(document).on('click', '#updateButton', App.updateRecord);
+  },
 
+  getAddress: function() {
+    //By default we set account in the search
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+      search_address.val(accounts[0]);
+    });
   },
 
   getRecord: function() {
@@ -127,29 +148,23 @@ App = {
 
     var healthRecordInstance;
 
-    // web3.eth.getAccounts(function(error, accounts) {
-    //   if (error) {
-    //     console.log(error);
-    //   }
+    var account = search_address.val();
 
-      var account = search_address.val();
+    App.contracts.HealthRecord.deployed().then(function(instance) {
+      healthRecordInstance = instance;
 
-      App.contracts.HealthRecord.deployed().then(function(instance) {
-        healthRecordInstance = instance;
+      return healthRecordInstance.getRecord(account);
+    }).then(function(result) {
+      let record = new HealthRecord(result);
+      search_result.html("");
 
-        return healthRecordInstance.getRecord(account);
-      }).then(function(result) {
-        debugger;
-        let record = new HealthRecord(result);
-
-        search_result.html("");
+      if (record.isValid()) {
         record.addHealthRecordToDOM(search_result);
-      }).catch(function(err) {
-        debugger;
+      }
+    }).catch(function(err) {
 
-        console.log(err.message);
-      });
-    //});
+      console.log(err.message);
+    });
   },
 
   createRecord: function(event) {
@@ -157,24 +172,15 @@ App = {
 
     var healthRecordInstance;
 
-    // web3.eth.getAccounts(function(error, accounts) {
-    //   if (error) {
-    //     console.log(error);
-    //   }
+    App.contracts.HealthRecord.deployed().then(function(instance) {
+      healthRecordInstance = instance;
 
-    //   var account = accounts[0];
-      debugger;
-
-      App.contracts.HealthRecord.deployed().then(function(instance) {
-        healthRecordInstance = instance;
-
-        return healthRecordInstance.createRecord(create_problems.val(), create_medications.val(), create_allergies.val(), create_weight.val(), create_height.val());
-      }).then(function(result) {
-        alert('Creation Successful!');
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-    //});
+      return healthRecordInstance.createRecord(create_problems.val(), create_medications.val(), create_allergies.val(), create_weight.val(), create_height.val());
+    }).then(function(result) {
+      alert('Creation Successful!');
+    }).catch(function(err) {
+      console.log(err.message);
+    });
   },
 
   updateRecord: function(event) {
