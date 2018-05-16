@@ -18,8 +18,8 @@ var update_button = $('#updateButton');
 
 class HealthRecord {
   constructor(result) {
-    this.height_cm = result[3];
-    this.weight_kg = result[4];
+    this.height_cm = result[3].c[0];
+    this.weight_kg = result[4].c[0];
     this.problems = result[0];
     this.medications = result[1];
     this.allergies = result[2];
@@ -32,14 +32,14 @@ class HealthRecord {
     var div = $('<div>').addClass('form-group');
     var label = $('<label>').html('Height (cm)').addClass('control-label').attr('for', 'HRUpdateHeight');
     div.append(label);
-    var input = $('<input>').html(this.height_cm).addClass('form-control').attr({'type': 'number', 'id': 'HRUpdateHeight'});
+    var input = $('<input>').val(this.height_cm.toString()).addClass('form-control').attr({'type': 'number', 'id': 'HRUpdateHeight'});
     div.append(input);
     form.append(div);
 
     var div = $('<div>').addClass('form-group');
     var label = $('<label>').html('Weight (kg)').addClass('control-label').attr('for', 'HRUpdateWeight');
     div.append(label);
-    var input = $('<input>').html(this.weight_kg).addClass('form-control').attr({'type': 'number', 'id': 'HRUpdateWeight'});
+    var input = $('<input>').val(this.weight_kg.toString()).addClass('form-control').attr({'type': 'number', 'id': 'HRUpdateWeight'});
     div.append(input);
     form.append(div);
 
